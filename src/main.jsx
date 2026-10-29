@@ -73,6 +73,7 @@ function App() {
       {isReady && mode === 'baru' && <section className="price-range panel"><div className="range-heading"><div><div className="section-kicker">RENTANG HARGA</div><h3>Rekomendasi jual</h3></div><span className="range-badge">3 opsi</span></div><div className="range-row"><span>Minimum</span><strong>{rupiah(result.min)}</strong></div><div className="range-row median"><span><span className="median-dot"/> Median <small>Rekomendasi</small></span><strong>{rupiah(result.med)}</strong></div><div className="range-row"><span>Maksimum</span><strong>{rupiah(result.max)}</strong></div></section>}
     </aside></motion.div></AnimatePresence>
     </section>
+    <footer className="app-footer"><span>Pasifik Teknik <i/> Price Updater</span><span>Versi 2.1</span></footer>
   </motion.main></div>;
 }
 

@@ -142,6 +142,10 @@ a { color: inherit; }
 .management-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #5546d916; }
 .management-form .management-link { justify-content: center; margin: 2px 0 0; cursor: pointer; }
 .management-form .management-link:disabled { border-color: #e4e5eb; background: #f0f1f4; color: #a0a2ad; cursor: not-allowed; }
+.app-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+.app-footer > span:first-child { display: flex; align-items: center; gap: 8px; color: #555763; font-weight: 600; }
+.app-footer i { width: 3px; height: 3px; border-radius: 50%; background: #b7b8c0; }
+.app-footer > span:last-child { padding: 5px 8px; border: 1px solid var(--line); border-radius: 5px; background: #fff; font-size: 9px; font-weight: 600; }
 
 @media (max-width: 760px) {
   .container { width: min(100% - 32px, 600px); }
