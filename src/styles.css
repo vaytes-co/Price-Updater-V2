@@ -136,6 +136,8 @@ body{background:#fff;color:var(--ink)}
 .blue-stage{position:relative;z-index:2;overflow:visible}
 .mode-switch{position:relative;z-index:4;margin-bottom:-22px}
 .workspace.overlap-workspace{position:relative;z-index:1;margin-top:0;padding-top:52px;overflow:visible}
+.management-link{display:inline-flex;align-items:center;gap:8px;margin:0 0 16px;padding:11px 14px;border:1px solid #4267f5;border-radius:12px;background:#f1f4ff;color:#2948d8;font-size:12px;font-weight:900;text-decoration:none;transition:background .2s,transform .2s}
+.management-link:hover{background:#e5eaff;transform:translateY(-1px)}
 @media(max-width:680px){
   .mode-switch{margin-bottom:-14px}
   .workspace.overlap-workspace{padding-top:64px}
