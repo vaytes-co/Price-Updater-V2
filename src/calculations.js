@@ -27,7 +27,11 @@ export function calculateOldProduct({ modalBaru, kenaikan, jualLama }) {
   const profit = (jualLama - modalLama) / modalLama;
   const toleransi = 0.02 * modalLama;
 
-  if (![modalLama, profit, toleransi].every(Number.isFinite) || modalLama <= 0) {
+  if (Number.isFinite(modalLama) && modalLama <= 0) {
+    return { status: 'invalid', message: 'Harga modal baru harus lebih besar daripada kenaikan harga agar modal lama tetap di atas Rp 0.' };
+  }
+
+  if (![modalLama, profit, toleransi].every(Number.isFinite)) {
     return { status: 'invalid', message: 'Data menghasilkan perhitungan yang tidak valid.' };
   }
 

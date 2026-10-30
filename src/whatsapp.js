@@ -12,17 +12,19 @@ export function getIndonesianTimeGreeting(date = new Date()) {
   return 'malam';
 }
 
-export function createManagementReviewMessage({ productName, productBrand, modalLama, modalBaru, kenaikan, jualLama, profit, date = new Date() }) {
+export function createManagementReviewMessage({ productName, productCode, modalLama, modalBaru, kenaikan, jualLama, profit, date = new Date() }) {
   const proposedPrice = roundOldProductPrice((1 + profit) * modalBaru, modalBaru);
 
   return [
     `Halo, ${getIndonesianTimeGreeting(date)} Ko David, saya mau meminta review perhitungan harga produk lama.`,
     '',
     `Nama produk: ${productName}`,
-    `Merek produk: ${productBrand}`,
+    `Kode produk: ${productCode}`,
+    '',
     `Modal lama: ${formatRupiah(modalLama)}`,
     `Modal baru: ${formatRupiah(modalBaru)}`,
-    `Kenaikan modal: ${formatRupiah(kenaikan)}`,
+    `Kenaikan harga: ${formatRupiah(kenaikan)}`,
+    '',
     `Harga jual lama: ${formatRupiah(jualLama)}`,
     `Rekomendasi harga jual: ${formatRupiah(proposedPrice)}`,
     '',

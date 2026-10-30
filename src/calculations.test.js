@@ -39,6 +39,15 @@ test('old products require management verification at exactly 40 percent profit'
   assert.equal(result.whatsappUrl, 'https://wa.me/+6281315188603');
 });
 
+test('old product increase must remain below the new modal to keep the old modal positive', () => {
+  const equalResult = calculateOldProduct({ modalBaru: 10_000, kenaikan: 10_000, jualLama: 50_000 });
+  const greaterResult = calculateOldProduct({ modalBaru: 10_000, kenaikan: 10_001, jualLama: 50_000 });
+
+  assert.equal(equalResult.status, 'invalid');
+  assert.equal(greaterResult.status, 'invalid');
+  assert.match(equalResult.message, /modal lama tetap di atas Rp 0/);
+});
+
 test('old product rounding uses units based on the new modal, including one million', () => {
   assert.equal(roundOldProductPrice(1_234, 999), 1_230);
   assert.equal(roundOldProductPrice(1_234, 1_000), 1_200);

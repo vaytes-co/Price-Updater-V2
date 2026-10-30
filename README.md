@@ -13,6 +13,8 @@ npm run dev
 
 ```bash
 npm run build
+
+RAYON_NUM_THREADS=1 npm run build
 ```
 
 Unggah isi folder `dist/` ke hosting statis/cPanel.
