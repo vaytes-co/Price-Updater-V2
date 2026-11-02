@@ -1,6 +1,6 @@
-import { roundOldProductPrice } from './calculations.js';
+import { MANAGEMENT_WHATSAPP_URL, roundOldProductPrice } from './calculations.js';
 
-const formatRupiah = value => `Rp ${new Intl.NumberFormat('id-ID', {
+const formatRupiah = value => `Rp ${new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 }).format(value)}`;
 
@@ -30,4 +30,35 @@ export function createManagementReviewMessage({ productName, productCode, modalL
     '',
     'Terima kasih.',
   ].join('\n');
+}
+
+export function createNewProductManagementReviewMessage({ productName, productCode, modalProdukBaru, hargaMinimum, hargaMedian, hargaMaksimum, hargaDiajukan }) {
+  return [
+    'Halo, siang Ko David. Saya ingin meminta review dan persetujuan harga untuk produk baru.',
+    '',
+    '*INFORMASI PRODUK*',
+    `Nama produk: ${productName}`,
+    `Kode produk: ${productCode}`,
+    '',
+    '*INFORMASI MODAL*',
+    `Harga modal: ${formatRupiah(modalProdukBaru)}`,
+    '',
+    '*REKOMENDASI HARGA JUAL*',
+    'Berdasarkan hasil perhitungan rata-rata profit produk sampel, diperoleh rekomendasi:',
+    '',
+    `1. Harga Minimum: ${formatRupiah(hargaMinimum)}`,
+    `2. Harga Median: ${formatRupiah(hargaMedian)}`,
+    `3. Harga Maksimum: ${formatRupiah(hargaMaksimum)}`,
+    '',
+    '*PENGAJUAN HARGA*',
+    `Dari ketiga rekomendasi tersebut, saya mengajukan harga jual sebesar *${formatRupiah(hargaDiajukan)}*.`,
+    '',
+    'Mohon review dan persetujuannya dari Management.',
+    '',
+    'Terima kasih.',
+  ].join('\n');
+}
+
+export function createManagementWhatsAppUrl(message) {
+  return `${MANAGEMENT_WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
 }

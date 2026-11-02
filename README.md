@@ -14,7 +14,7 @@ npm run dev
 ```bash
 npm run build
 
-RAYON_NUM_THREADS=1 npm run build
+RAYON_NUM_THREADS=1 timeout 60s ./node_modules/.bin/vite build
 ```
 
 Unggah isi folder `dist/` ke hosting statis/cPanel.
@@ -40,15 +40,18 @@ Ganti file `public/logo.svg` dengan logo sendiri. Nama file tetap `logo.svg`. Ji
 3. `toleransi.naik = 0,02 × modal.lama`
 4. Jika `basis.profit < 0,20`, hitung `jual.baru = (1 + basis.profit) × modal.baru`.
 5. Jika basis profit `>= 0,20`, periksa kenaikan. Jika kenaikan tidak lebih besar dari toleransi, pertahankan harga jual lama.
-6. Jika kenaikan lebih besar dari toleransi dan `basis.profit < 0,40`, hitung harga jual baru dengan rumus di atas.
-7. Jika kenaikan lebih besar dari toleransi dan `basis.profit >= 0,40`, minta verifikasi manajemen melalui WhatsApp di https://wa.me/+6281315188603.
+6. Jika kenaikan lebih besar dari toleransi dan `basis.profit < 0,40`, minta verifikasi manajemen melalui WhatsApp di https://wa.me/+6281315188603.
+7. Jika kenaikan lebih besar dari toleransi dan `basis.profit >= 0,40`, hitung harga jual baru dengan rumus di atas.
+
+Peringatan verifikasi hanya menampilkan informasi. Tombol pengiriman permintaan aktif setelah nama dan kode produk diisi.
 
 ### Produk Baru
 
 1. Setiap sampel: `basis.profit = (jual.sampel - modal.sampel) / modal.sampel`.
-2. `avg.profit.sample = (profit1 + profit2 + profit3) / 3`.
-3. Jika rata-rata profit `< 20%`: `minimum = modal × 1,2`; `maksimum = (1 + avg.profit.sample) × modal`; `median = (minimum + maksimum) / 2`.
-4. Jika rata-rata profit `>= 20%`: `median = (1 + avg.profit.sample) × modal`; `minimum = median × 0,98`; `maksimum = median × 1,02`.
+2. `avg.profit_sample = (profit1 + profit2 + profit3) / 3`.
+3. Jika `avg.profit_sample <= 20%` (cabang TRUE): `jual.med_TRUE = (1 + avg.profit_sample) × modal.produk_baru`; `jual.min_TRUE = jual.med_TRUE × 0,98`; `jual.max_TRUE = jual.med_TRUE × 1,02`.
+4. Jika `avg.profit_sample > 20%` (cabang FALSE): `jual.min_FALSE = modal.produk_baru × 1,2`; `jual.max_FALSE = (1 + avg.profit_sample) × modal.produk_baru`; `jual.med_FALSE = (jual.min_FALSE + jual.max_FALSE) / 2`.
+5. Setelah rekomendasi tersedia, isi nama dan kode produk, pilih harga minimum, median, atau maksimum sebagai harga pengajuan, lalu kirim permintaan persetujuan melalui WhatsApp.
 
 ### Pembulatan
 
@@ -69,4 +72,4 @@ Nilai dibulatkan ke kelipatan terdekat. Tepat 0,5 dibulatkan ke atas sebagai kon
 
 ## Catatan sumber
 
-Cabang basis profit 40% mengikuti aturan FR-07: jika profit kurang dari 40% harga jual dihitung ulang, sedangkan profit 40% atau lebih memerlukan verifikasi manajemen.
+Mengikuti PRD V2.1.1: jika kenaikan melebihi toleransi dan basis profit kurang dari 40%, minta verifikasi manajemen. Basis profit 40% atau lebih menghitung ulang harga jual. Produk baru menggunakan cabang TRUE untuk rata-rata profit `<= 20%` dan cabang FALSE untuk rata-rata profit `> 20%`.
