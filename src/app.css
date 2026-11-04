@@ -14,9 +14,9 @@
   --green-deep: #193957;
   --green-soft: #e8f0fa;
   --lime: #d4e5fb;
-  --warning-ink: #873e4b;
-  --warning-accent: #d47883;
-  --warning-border: #f0cbd0;
+  --warning-ink: #8e0909;
+  --warning-accent: #e6001b;
+  --warning-border: #e76190;
   --warning-surface: #fff2f3;
 }
 
@@ -140,7 +140,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .range-badge { padding: 5px 8px; border-radius: 99px; background: var(--green-soft); color: var(--green); font-size: 10px; font-weight: 750; }
 .range-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; border-top: 1px solid #edf0ec; color: #68746c; font-size: 12px; }
 .range-row strong { color: var(--ink); font-size: 14px; font-weight: 750; }
-.range-row.median { border-top-color: #e3eae2; color: var(--green); }
+.range-row.median { border-top-color: #e3eae2; }
 .range-row.median > span { display: flex; align-items: center; gap: 6px; }
 .range-row.median small { font-size: inherit; font-weight: inherit; }
 .management-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0 0 12px; padding: 11px 14px; border: 1px solid #c8e3cf; border-radius: 8px; background: #e3f1e6; color: #285d3a; font-size: 12px; font-weight: 750; text-decoration: none; }

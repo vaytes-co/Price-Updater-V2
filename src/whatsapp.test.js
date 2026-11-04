@@ -48,6 +48,23 @@ test('management review message includes inputs, proposed price, and time-based 
   ].join('\n'));
 });
 
+test('management verification message does not present an unapproved price as final', () => {
+  const message = createManagementReviewMessage({
+    productName: 'Produk Contoh',
+    productCode: 'KODE-123',
+    modalLama: 100_000,
+    modalBaru: 103_000,
+    kenaikan: 3_000,
+    jualLama: 140_000,
+    verificationRequired: true,
+    date: new Date(2026, 0, 1, 8),
+  });
+
+  assert.match(message, /Rekomendasi harga jual: Menunggu verifikasi manajemen\./);
+  assert.doesNotMatch(message, /Rekomendasi harga jual: Rp/);
+  assert.doesNotMatch(message, /NaN|undefined|null/);
+});
+
 test('new product management message includes product details, recommendations, and proposed price', () => {
   const message = createNewProductManagementReviewMessage({
     productName: 'Produk Baru',

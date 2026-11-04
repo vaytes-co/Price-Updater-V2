@@ -12,7 +12,7 @@ export function getIndonesianTimeGreeting(date = new Date()) {
   return 'malam';
 }
 
-export function createManagementReviewMessage({ productName, productCode, modalLama, modalBaru, kenaikan, jualLama, hargaRekomendasi, date = new Date() }) {
+export function createManagementReviewMessage({ productName, productCode, modalLama, modalBaru, kenaikan, jualLama, hargaRekomendasi, verificationRequired = false, date = new Date() }) {
   return [
     `Halo, ${getIndonesianTimeGreeting(date)} Ko David, saya mau meminta review perhitungan harga produk lama.`,
     '',
@@ -24,7 +24,9 @@ export function createManagementReviewMessage({ productName, productCode, modalL
     `Kenaikan harga: ${formatRupiah(kenaikan)}`,
     '',
     `Harga jual lama: ${formatRupiah(jualLama)}`,
-    `Rekomendasi harga jual: ${formatRupiah(hargaRekomendasi)}`,
+    verificationRequired
+      ? 'Rekomendasi harga jual: Menunggu verifikasi.'
+      : `Rekomendasi harga jual: ${formatRupiah(hargaRekomendasi)}`,
     '',
     'Terima kasih.',
   ].join('\n');
