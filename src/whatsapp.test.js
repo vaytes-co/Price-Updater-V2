@@ -60,7 +60,7 @@ test('management verification message does not present an unapproved price as fi
     date: new Date(2026, 0, 1, 8),
   });
 
-  assert.match(message, /Rekomendasi harga jual: Menunggu verifikasi manajemen\./);
+  assert.match(message, /Apakah ada perubahan harga jual\?/);
   assert.doesNotMatch(message, /Rekomendasi harga jual: Rp/);
   assert.doesNotMatch(message, /NaN|undefined|null/);
 });
