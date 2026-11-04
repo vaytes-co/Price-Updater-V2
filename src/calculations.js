@@ -18,11 +18,21 @@ export function roundOldProductPrice(value, modalBaru) {
 }
 
 export function roundNewProductPrice(value, modal) {
-  const unit = modal < 1_000 ? 10 : modal < 100_000 ? 100 : 1_000;
+  const unit = modal < 1_000
+    ? 10
+    : modal < 100_000
+      ? 100
+      : modal < 1_000_000
+        ? 1_000
+        : 10_000;
   return roundToUnit(value, unit);
 }
 
 export function calculateOldProduct({ modalBaru, kenaikan, jualLama }) {
+  if (![modalBaru, kenaikan, jualLama].every(Number.isFinite) || modalBaru <= 0 || kenaikan < 0 || jualLama <= 0) {
+    return { status: 'invalid', message: 'Harga modal baru, kenaikan harga, dan harga jual lama harus berupa angka valid di atas Rp 0.' };
+  }
+
   const modalLama = modalBaru - kenaikan;
   const profit = (jualLama - modalLama) / modalLama;
   const toleransi = 0.02 * modalLama;
@@ -36,20 +46,12 @@ export function calculateOldProduct({ modalBaru, kenaikan, jualLama }) {
   }
 
   const result = { modalLama, profit, toleransi, kenaikan };
-  const calculateUpdatedPrice = () => {
-    const raw = (1 + profit) * modalBaru;
-    if (!Number.isFinite(raw)) {
-      return { status: 'invalid', message: 'Data menghasilkan perhitungan yang tidak valid.' };
-    }
-
-    return {
-      ...result,
-      status: 'ready',
-      price: roundOldProductPrice(raw, modalBaru),
-      raw,
-      unchanged: false,
-    };
-  };
+  const raw = (1 + profit) * modalBaru;
+  if (!Number.isFinite(raw)) {
+    return { status: 'invalid', message: 'Data menghasilkan perhitungan yang tidak valid.' };
+  }
+  const updatedPrice = roundOldProductPrice(raw, modalBaru);
+  const calculateUpdatedPrice = () => ({ ...result, status: 'ready', price: updatedPrice, unchanged: false });
 
   if (profit < 0.20) {
     return calculateUpdatedPrice();
@@ -60,15 +62,15 @@ export function calculateOldProduct({ modalBaru, kenaikan, jualLama }) {
   }
 
   if (profit < 0.40) {
-    return {
-      ...result,
-      status: 'warning',
-      message: MANAGEMENT_MESSAGE,
-      whatsappUrl: MANAGEMENT_WHATSAPP_URL,
-    };
+    return calculateUpdatedPrice();
   }
 
-  return calculateUpdatedPrice();
+  return {
+    ...result,
+    status: 'warning',
+    message: MANAGEMENT_MESSAGE,
+    whatsappUrl: MANAGEMENT_WHATSAPP_URL,
+  };
 }
 
 export function calculateNewProductPrices(modalProdukBaru, samples) {
@@ -81,7 +83,7 @@ export function calculateNewProductPrices(modalProdukBaru, samples) {
   }
 
   const sampleProfits = samples.map(({ buy, sell }) => (sell - buy) / buy);
-  const avgProfit = sampleProfits.reduce((sum, profit) => sum + profit, 0) / sampleProfits.length;
+  const avgProfit = sampleProfits.reduce((sum, profit) => sum + profit / sampleProfits.length, 0);
 
   if (!Number.isFinite(avgProfit)) {
     return { status: 'invalid', message: 'Data menghasilkan perhitungan yang tidak valid.' };
@@ -92,7 +94,7 @@ export function calculateNewProductPrices(modalProdukBaru, samples) {
   let med;
   let max;
 
-  if (avgProfit <= 0.20 + Number.EPSILON / 4) {
+  if (avgProfit <= 0.20) {
     branch = 'TRUE';
     med = (1 + avgProfit) * modalProdukBaru;
     min = med * 0.98;

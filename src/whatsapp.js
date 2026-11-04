@@ -1,4 +1,4 @@
-import { MANAGEMENT_WHATSAPP_URL, roundOldProductPrice } from './calculations.js';
+import { MANAGEMENT_WHATSAPP_URL } from './calculations.js';
 
 const formatRupiah = value => `Rp ${new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
@@ -6,15 +6,13 @@ const formatRupiah = value => `Rp ${new Intl.NumberFormat('en-US', {
 
 export function getIndonesianTimeGreeting(date = new Date()) {
   const hour = date.getHours();
-  if (hour >= 4 && hour < 11) return 'pagi';
-  if (hour >= 11 && hour < 15) return 'siang';
-  if (hour >= 15 && hour < 18) return 'sore';
+  if (hour < 11) return 'pagi';
+  if (hour < 15) return 'siang';
+  if (hour < 18) return 'sore';
   return 'malam';
 }
 
-export function createManagementReviewMessage({ productName, productCode, modalLama, modalBaru, kenaikan, jualLama, profit, date = new Date() }) {
-  const proposedPrice = roundOldProductPrice((1 + profit) * modalBaru, modalBaru);
-
+export function createManagementReviewMessage({ productName, productCode, modalLama, modalBaru, kenaikan, jualLama, hargaRekomendasi, date = new Date() }) {
   return [
     `Halo, ${getIndonesianTimeGreeting(date)} Ko David, saya mau meminta review perhitungan harga produk lama.`,
     '',
@@ -26,19 +24,18 @@ export function createManagementReviewMessage({ productName, productCode, modalL
     `Kenaikan harga: ${formatRupiah(kenaikan)}`,
     '',
     `Harga jual lama: ${formatRupiah(jualLama)}`,
-    `Rekomendasi harga jual: ${formatRupiah(proposedPrice)}`,
+    `Rekomendasi harga jual: ${formatRupiah(hargaRekomendasi)}`,
     '',
     'Terima kasih.',
   ].join('\n');
 }
 
-export function createNewProductManagementReviewMessage({ productName, productCode, modalProdukBaru, hargaMinimum, hargaMedian, hargaMaksimum, hargaDiajukan }) {
+export function createNewProductManagementReviewMessage({ productName, modalProdukBaru, hargaMinimum, hargaMedian, hargaMaksimum, hargaDiajukan, date = new Date() }) {
   return [
-    'Halo, siang Ko David. Saya ingin meminta review dan persetujuan harga untuk produk baru.',
+    `Halo, ${getIndonesianTimeGreeting(date)} Ko David. Saya ingin meminta review dan persetujuan harga untuk produk baru.`,
     '',
     '*INFORMASI PRODUK*',
     `Nama produk: ${productName}`,
-    `Kode produk: ${productCode}`,
     '',
     '*INFORMASI MODAL*',
     `Harga modal: ${formatRupiah(modalProdukBaru)}`,
@@ -53,9 +50,7 @@ export function createNewProductManagementReviewMessage({ productName, productCo
     '*PENGAJUAN HARGA*',
     `Dari ketiga rekomendasi tersebut, saya mengajukan harga jual sebesar *${formatRupiah(hargaDiajukan)}*.`,
     '',
-    'Mohon review dan persetujuannya dari Management.',
-    '',
-    'Terima kasih.',
+    'Mohon review dan persetujuannya dari Ko David. Terima kasih.',
   ].join('\n');
 }
 

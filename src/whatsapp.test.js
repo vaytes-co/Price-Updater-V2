@@ -8,10 +8,15 @@ import {
 } from './whatsapp.js';
 
 test('Indonesian WhatsApp greeting follows the time of day', () => {
+  assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 0)), 'pagi');
   assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 8)), 'pagi');
+  assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 10)), 'pagi');
   assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 12)), 'siang');
+  assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 14)), 'siang');
   assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 16)), 'sore');
+  assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 17)), 'sore');
   assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 20)), 'malam');
+  assert.equal(getIndonesianTimeGreeting(new Date(2026, 0, 1, 23)), 'malam');
 });
 
 test('management review message includes inputs, proposed price, and time-based greeting', () => {
@@ -22,7 +27,7 @@ test('management review message includes inputs, proposed price, and time-based 
     modalBaru: 10_000,
     kenaikan: 5_000,
     jualLama: 50_000,
-    profit: 9,
+    hargaRekomendasi: 100_000,
     date: new Date(2026, 0, 1, 8),
   });
 
@@ -46,20 +51,19 @@ test('management review message includes inputs, proposed price, and time-based 
 test('new product management message includes product details, recommendations, and proposed price', () => {
   const message = createNewProductManagementReviewMessage({
     productName: 'Produk Baru',
-    productCode: 'BARU-123',
     modalProdukBaru: 10_000,
     hargaMinimum: 12_000,
     hargaMedian: 12_500,
     hargaMaksimum: 13_000,
     hargaDiajukan: 12_500,
+    date: new Date(2026, 0, 1, 8),
   });
 
   assert.equal(message, [
-    'Halo, siang Ko David. Saya ingin meminta review dan persetujuan harga untuk produk baru.',
+    'Halo, pagi Ko David. Saya ingin meminta review dan persetujuan harga untuk produk baru.',
     '',
     '*INFORMASI PRODUK*',
     'Nama produk: Produk Baru',
-    'Kode produk: BARU-123',
     '',
     '*INFORMASI MODAL*',
     'Harga modal: Rp 10,000',
@@ -74,9 +78,7 @@ test('new product management message includes product details, recommendations, 
     '*PENGAJUAN HARGA*',
     'Dari ketiga rekomendasi tersebut, saya mengajukan harga jual sebesar *Rp 12,500*.',
     '',
-    'Mohon review dan persetujuannya dari Management.',
-    '',
-    'Terima kasih.',
+    'Mohon review dan persetujuannya dari Ko David. Terima kasih.',
   ].join('\n'));
 });
 

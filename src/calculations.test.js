@@ -24,27 +24,28 @@ test('old products retain their price when increase equals the 2 percent toleran
   assert.equal(result.price, 120_000);
 });
 
-test('old products require management verification above tolerance when profit is below 40 percent', () => {
+test('old products recalculate above tolerance when profit is below 40 percent', () => {
   const result = calculateOldProduct({ modalBaru: 103_000, kenaikan: 3_000, jualLama: 139_900 });
 
-  assert.equal(result.status, 'warning');
-  assert.match(result.message, /verifikasi tambahan dari pihak Manajemen/);
-  assert.equal(result.whatsappUrl, 'https://wa.me/+6281315188603');
-});
-
-test('old products recalculate at exactly 40 percent profit when increase exceeds tolerance', () => {
-  const result = calculateOldProduct({ modalBaru: 103_000, kenaikan: 3_000, jualLama: 140_000 });
-
   assert.equal(result.status, 'ready');
-  assert.equal(result.profit, 0.4);
+  assert.equal(result.profit, 0.399);
   assert.equal(result.price, 144_000);
 });
 
-test('old products recalculate above 40 percent profit when increase exceeds tolerance', () => {
+test('old products require management verification at exactly 40 percent profit', () => {
+  const result = calculateOldProduct({ modalBaru: 103_000, kenaikan: 3_000, jualLama: 140_000 });
+
+  assert.equal(result.status, 'warning');
+  assert.equal(result.profit, 0.4);
+  assert.equal(result.price, undefined);
+  assert.equal(result.whatsappUrl, 'https://wa.me/+6281315188603');
+});
+
+test('old products require management verification above 40 percent profit', () => {
   const result = calculateOldProduct({ modalBaru: 103_000, kenaikan: 3_000, jualLama: 141_000 });
 
-  assert.equal(result.status, 'ready');
-  assert.equal(result.price, 145_000);
+  assert.equal(result.status, 'warning');
+  assert.equal(result.price, undefined);
 });
 
 test('old product increase must remain below the new modal to keep the old modal positive', () => {
@@ -54,6 +55,12 @@ test('old product increase must remain below the new modal to keep the old modal
   assert.equal(equalResult.status, 'invalid');
   assert.equal(greaterResult.status, 'invalid');
   assert.match(equalResult.message, /modal lama tetap di atas Rp 0/);
+});
+
+test('old product calculations reject zero prices and negative increases', () => {
+  assert.equal(calculateOldProduct({ modalBaru: 0, kenaikan: 0, jualLama: 100 }).status, 'invalid');
+  assert.equal(calculateOldProduct({ modalBaru: 100, kenaikan: -1, jualLama: 100 }).status, 'invalid');
+  assert.equal(calculateOldProduct({ modalBaru: 100, kenaikan: 1, jualLama: 0 }).status, 'invalid');
 });
 
 test('old product rounding uses units based on the new modal, including one million', () => {
@@ -114,4 +121,5 @@ test('new product rounding uses the new-product modal ranges', () => {
   assert.equal(roundNewProductPrice(1_234, 999), 1_230);
   assert.equal(roundNewProductPrice(1_234, 1_000), 1_200);
   assert.equal(roundNewProductPrice(123_456, 100_000), 123_000);
+  assert.equal(roundNewProductPrice(1_234_567, 1_000_000), 1_230_000);
 });
