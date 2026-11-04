@@ -24,6 +24,7 @@ export function createManagementReviewMessage({ productName, productCode, modalL
     `Kenaikan harga: ${formatRupiah(kenaikan)}`,
     '',
     `Harga jual lama: ${formatRupiah(jualLama)}`,
+    '',
     verificationRequired
       ? 'Apakah ada perubahan harga jual?'
       : `Rekomendasi harga jual: ${formatRupiah(hargaRekomendasi)}`,
