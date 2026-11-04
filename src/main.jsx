@@ -128,7 +128,11 @@ function App() {
           </div>
         </form>}
         {mode === 'lama' && <button className="btn-copy" disabled={!isReady || isVerificationRequired} onClick={() => copyPrice(result.price)}>{copiedPrice === 'main' ? <motion.span className="success-check" initial={{ scale: 0, rotate: -35 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 480, damping: 15 }}><Check size={17}/></motion.span> : <Clipboard size={17}/>} {copiedPrice === 'main' ? 'Nominal disalin!' : 'Salin nominal'}</button>}
-        {isReady && mode === 'lama' && <div className="result-tags"><span className={result.unchanged ? 'tag neutral' : 'tag positive'}>{result.unchanged ? 'Harga dipertahankan' : 'Harga diperbarui'}</span><span className="tag neutral">Profit {numberText(result.profit * 100)}%</span></div>}
+        {isReady && mode === 'lama' && 
+          <div className="result-tags">
+            {/* <span className={result.unchanged ? 'tag neutral' : 'tag positive'}>{result.unchanged ? 'Harga dipertahankan' : 'Harga diperbarui'}</span> */}
+            {/* <span className="tag neutral">Profit {numberText(result.profit * 100)}%</span> */}
+          </div>}
       </section>
       {isReady && mode === 'baru' && <section className="price-range panel"><div className="range-heading"><div><div className="section-kicker">REKOMENDASI HARGA</div><h3>Tiga pilihan harga jual</h3></div></div><div className="range-row"><span>Minimum</span><strong>{rupiah(result.min)}</strong></div><div className="range-row median"><span>Median</span><strong>{rupiah(result.med)}</strong></div><div className="range-row"><span>Maksimum</span><strong>{rupiah(result.max)}</strong></div></section>}
       {isReady && mode === 'baru' && <section className="new-product-review panel">

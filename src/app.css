@@ -104,6 +104,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .average-box > div:nth-child(2) { display: grid; gap: 3px; }
 .average-box > div:nth-child(2) span { color: var(--muted); font-size: 11px; }
 .average-note { margin-left: auto; color: #879189; font-size: 10px; }
+.sample-profit, .average-box { display: none; }
 .panel-actions { display: flex; justify-content: flex-end; margin-top: 7px; }
 .btn-reset { display: inline-flex; min-height: 36px; align-items: center; gap: 7px; padding: 7px 9px; border: 0; border-radius: 8px; background: transparent; color: #69756d; font-size: 12px; font-weight: 650; }
 .btn-reset:hover { background: #f1f4ef; color: var(--ink); }
